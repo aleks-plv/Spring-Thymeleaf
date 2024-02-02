@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BeerTag | Error Page</title>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<header>
+    <div>
+        <h3>
+            <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a>
+            | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
+            | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+        </h3>
+    </div>
+</header>
+<div class="body-content">
+    <h2 class="label-error" th:text="${statusCode}">HTTP Status Code</h2>
+    <h3 class="error" th:text="${error}">Error placeholder</h3>
+</div>
+<footer>
+    <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">BeerTag</small>
+</footer>
+</body>
+</html>
