@@ -17,6 +17,7 @@
 </header>
 
 <div class="body-content">
+    <h2>Create Beer</h2>
     <form th:action="@{/beers/new}" th:object="${beer}" action="#" method="post">
 
         <label th:text="#{beer.label.name}">Beer</label>

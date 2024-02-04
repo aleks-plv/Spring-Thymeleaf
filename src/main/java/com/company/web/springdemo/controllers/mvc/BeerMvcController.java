@@ -43,10 +43,10 @@ public class BeerMvcController {
         return styleService.get();
     }
 
-    @ModelAttribute("requestURI")
-    public String requestURI(final HttpServletRequest request) {
-        return request.getRequestURI();
-    }
+//    @ModelAttribute("requestURI")
+//    public String requestURI(final HttpServletRequest request) {
+//        return request.getRequestURI();
+//    }
 
     @GetMapping
     public String showAllBeers(Model model) {
@@ -78,29 +78,36 @@ public class BeerMvcController {
                              BindingResult errors,
                              Model model) {
         if (errors.hasErrors()) {
-            return "BeerForm";
+            return "BeerCreateView";
         }
         try {
             User creator = userService.get(1);
             Beer newBeer = beerMapper.fromDto(beer);
             beerService.create(newBeer, creator); //tuk ima entityDuplicateException zatova go catch-vame po dolu
             return "redirect:/beers";
-        } catch (EntityDuplicateException e) {
-            errors.rejectValue("name", "beer.exists", e.getMessage());
-            return "BeerForm";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
+        } catch (EntityDuplicateException e) {
+            errors.rejectValue("name", "duplicate_beer", e.getMessage());
+            return "BeerCreateView";
         }
     }
 
     @GetMapping("/{id}/update")
     public String showEditBeerPage(@PathVariable int id, Model model) {
-        Beer beer = beerService.get(id);
-        BeerDto beerDto = beerMapper.toDto(beer);
-        model.addAttribute("beer", beerDto);
-        return "BeerUpdate";
+        try {
+            Beer beer = beerService.get(id);
+            BeerDto beerDto = beerMapper.toDto(beer);
+            model.addAttribute("beerId", id);
+            model.addAttribute("beer", beerDto);
+            return "UpdateBeerView";
+        }catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
 
     }
 
@@ -110,27 +117,26 @@ public class BeerMvcController {
                              BindingResult errors,
                              Model model) {
         if (errors.hasErrors()) {
-            return "BeerUpdate";
+            return "UpdateBeerView";
         }
         try {
             User user = userService.get(1);
             Beer newBeer = beerMapper.fromDto(id, beer);
             beerService.update(newBeer, user);
             return "redirect:/beers";
-        } catch (EntityDuplicateException e) {
-            errors.rejectValue("name", "beer.exists", e.getMessage());
-            return "BeerUpdate";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
+        } catch (EntityDuplicateException e) {
+            errors.rejectValue("name", "duplicate_beer", e.getMessage());
+            return "UpdateBeerView";
         }
     }
 
     @GetMapping("/{id}/delete")
     public String deleteBeer(@PathVariable int id, Model model) {
         try {
-            //hard delete
             User user = userService.get(1);
             beerService.delete(id, user);
             return "redirect: /beers";
