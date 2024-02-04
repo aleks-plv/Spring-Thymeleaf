@@ -22,8 +22,13 @@
         <p class="margin12" th:text="#{beer.label.style} + ': ' +      ${beer.style.name}">Porter</p>
         <p class="margin12" th:text="#{beer.label.createdBy}  + ': ' + ${beer.createdBy.email}">
             user@mail.com</p>
+<!--        <a href="#" th:href="@{__${requestURI}__/update}">Update</a>-->
+<!--        <a href="#" th:href="@{__${requestURI}__/delete}">Delete</a>-->
+        <a href="#" th:href="@{/beers/{id}/update(id=${beer.getId()})}">Update</a>
+        <a href="#" th:href="@{/beers/{id}/update(id=${beer.getId()})}">Delete</a>
     </div>
 </div>
+
 <footer>
     <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">BeerTag</small>
 </footer>
