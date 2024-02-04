@@ -1,55 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>New Beer</title>
-    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
+<form th:replace="~{BeerForm.html::head('Create Beer')}"></form>
 <body>
-<header>
-    <div>
-        <h3>
-            <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a>
-            | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
-            | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
-        </h3>
-    </div>
-</header>
+<form th:replce="~{BeerForm.html::header}"></form>
 
 <div class="body-content">
-    <h2>Create Beer</h2>
-    <form th:action="@{/beers/new}" th:object="${beer}" action="#" method="post">
-
-        <label th:text="#{beer.label.name}">Beer</label>
-        <br/>
-        <input type="text" th:field="*{name}"/>
-        <br/>
-        <label class="error" th:errors="*{name}">Name error placeholder</label>
-        <br/><br/>
-
-        <label th:text="#{beer.label.abv}"> ABV: </label>
-        <br/>
-        <input type="text" th:field="*{abv}">
-        <br/>
-        <label class="error" th:errors="*{abv}">Abv error placeholder</label>
-        <br/><br/>
-
-        <label th:text="#{beer.label.style}">Style: </label>
-        <select th:field="*{styleId}">
-            <option th:each="style : ${styles}"
-            th:value="${style.id}"
-            th:text="${style.name}">
-                BeerStyleOne
-            </option>
-        </select>
-        <br/>
-        <label class="error" th:errors="*{styleId}">Style error placeholder</label>
-        <br/><br/>
-        <input type="submit" value="Save"/>
-    </form>
+    <form th:replace="~{BeerForm.html::beer-form('New Beer')}"></form>
 </div>
-<footer>
-    <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">BeerTag</small>
-</footer>
+<form th:replace="~{BeerForm.html::footer}"></form>
 </body>
 </html>

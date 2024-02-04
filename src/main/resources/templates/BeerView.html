@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="'BeerTag | ' + ${beer.name}">Beer Profile</title>
-    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
+<form th:replace="~{BeerForm.html::head(${beer.name})}"></form>
 <body>
-<header>
-    <div>
-        <h3>
-            <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a>
-            | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
-            | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
-        </h3>
-    </div>
-</header>
+<form th:replace="~{BeerForm.html::header}"></form>
 <div class="body-content">
     <h2 th:text="${beer.name}">Beer Name</h2>
     <div th:style="text-align">
@@ -29,8 +17,6 @@
     </div>
 </div>
 
-<footer>
-    <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">BeerTag</small>
-</footer>
+<form th:replace="~{BeerForm.html::footer}"></form>
 </body>
 </html>
