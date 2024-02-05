@@ -2,8 +2,10 @@ package com.company.web.springdemo.helpers;
 
 import com.company.web.springdemo.exceptions.AuthorizationException;
 import com.company.web.springdemo.exceptions.EntityNotFoundException;
+import com.company.web.springdemo.models.LoginDto;
 import com.company.web.springdemo.models.User;
 import com.company.web.springdemo.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,20 @@ public class AuthenticationHelper {
             return user;
         } catch (EntityNotFoundException e) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+        }
+    }
+
+    public User tryAuthenticateUser(LoginDto loginDto) {
+        try {
+            User user = userService.get(loginDto.getUsername());
+
+            if (!user.getPassword().equals(loginDto.getPassword())) {
+                throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            }
+
+            return user;
+        } catch (EntityNotFoundException e) {
+            throw  new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }
     }
 
